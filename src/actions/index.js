@@ -36,6 +36,22 @@ export const signIn = (email, password, history) => {
   };
 };
 
+export const signUp = (email, password, history) => {
+  return (dispatch) => {
+    axios.post(`${ROOT_URL}/users`, { email, password })
+    .then(response => {
+      localStorage.setItem('token', response.data.token);
+      dispatch({
+        type: USER_AUTHENTICATED,
+      });
+      history.push('/users');
+    })
+    .catch(() => {
+      dispatch(authError('Problem with email/password combo'));
+    });
+  };
+};
+
 export const getUsers = () => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
